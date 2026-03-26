@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 
 @Component({
   selector: 'app-hello',
@@ -14,12 +14,27 @@ export class Hello {
     console.log ('Botão clicado');
     this.isDisabled = !this.isDisabled;
   }
-  protected contador = 0;
+  protected contador = signal(0);
 
-  incrementar() {
-    this.contador++;
-    console.log('Contador:', this.contador);
+  protected doubleContador = computed(()=>this.contador() * 5);
+
+  private readonly countLog = effect(()=>{
+    console.log('Contador mudou:', this.contador())
+  })
+
+  protected incrementar() {
+    //contador = contador + 1;
+    this.contador.update(value => value + 1);
   }
+  protected retirar() {
+    //contador = contador - 1;
+    this.contador.update(value => value - 1);
+  }
+
+  protected resetarContador() {
+    this.contador.set(0)
+  }
+
   protected nome = '';
 
   protected aoDigitar(event:Event){
