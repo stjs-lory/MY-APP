@@ -1,17 +1,19 @@
 <div class="products-container">
-  <p> Total de produtos: {{ products().length }}</p>
+
+  <mat-form-field appearence='outline' class="search-field">
+    <mat-label>Search products</mat-label>
+    <input matInput [(ngModel)]="searchTerm" placeholder="e.g heardphones"/>
+  </mat-form-field>
 
   <div class="products-grid">
-    @for (product of products(); track product.id) {
-      <app-product-card [product]="product"/>
+    @for (product of filterProducts(); track product.id) {
+      <app-product-card [product]="product"
+      (addToCart)="onAddToCard($event)"/>
     } @empty {
       <div class="empty-state">
         <mat-icon>inventory_2</mat-icon>
-        <h3>Nenhum produto encontrado</h3>
-        <p>Check novamente as páginas</p>
+        <p>Nenhum produto encontrado</p>
       </div>
     }
   </div>
 </div>
-
-
